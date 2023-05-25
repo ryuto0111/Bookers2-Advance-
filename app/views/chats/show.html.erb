@@ -1,21 +1,21 @@
-<div class="container">
-  <div class="chat bg-light">
-    <div class="bg-primary chat-topbar">
-      <h2 class="text-white text-center"><%= @user.name %> さんとのチャット</h2>
-    </div>
-    <div class="message">
-      <%= render "chats/messages", chats: @chats %>
-    </div>
+<h1 id="room" data-room="<%= @room.id %>" data-user="<%= current_user.id %>"><%= @user.name %> さんとのチャット</h1>
 
-    <div class="col-md-6 form-group">
-      <%= form_with model: @chat, data: {remote: true} do |f| %>
-        <div class="errors">
-          <%= render "layouts/errors", obj: f.object %>
-        </div>
-        <%= f.text_field :message, placeholder: "メッセージを入力してください", class:"form-control", autocomplete: "off" %>
-        <%= f.hidden_field :room_id, value: @room.id %><br />
-        <%= f.submit "送信", class:"btn btn-outline-primary" %>
-      <% end %>
-    </div>
-  </div>
+<div class="message" style="width: 400px;">
+  <% @chats.each do |chat| %>
+    <% if chat.user_id == current_user.id %>
+      <p style="text-align: right;"><%= chat.message %></p>
+    <% else %>
+      <p style="text-align: left;"><%= chat.message %></p>
+    <% end %>
+  <% end %>
 </div>
+
+<div class="errors">
+  <%= render "layouts/errors", obj: @chat %>
+</div>
+
+<%= form_with model: @chat, data: {remote: true} do |f| %>
+  <%= f.text_field :message %>
+  <%= f.hidden_field :room_id %>
+  <%= f.submit "送信", class:"btn btn-primary" %>
+<% end %>
