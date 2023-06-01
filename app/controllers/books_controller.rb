@@ -11,7 +11,6 @@ class BooksController < ApplicationController
   end
 
   def index
-    @user = User.all
     to  = Time.current.at_beginning_of_day
     from  = (to - 6.day).at_end_of_day
     @books = Book.all.sort {|a,b|
